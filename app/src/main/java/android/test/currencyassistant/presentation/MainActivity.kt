@@ -1,7 +1,8 @@
-package android.test.currencyassistant
+package android.test.currencyassistant.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.test.currencyassistant.R
 
 class MainActivity : AppCompatActivity() {
 
