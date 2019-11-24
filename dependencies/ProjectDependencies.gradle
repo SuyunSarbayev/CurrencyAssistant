@@ -1,0 +1,50 @@
+ext{
+    retrofitVersion = "2.6.2"
+    retrofitPackage = "com.squareup.retrofit2"
+
+    retrofitDependencies = [
+            retrofit                :loadDependency(retrofitPackage, "retrofit", retrofitVersion),
+            retrofitConverterGson   :loadDependency(retrofitPackage, "converter-gson", retrofitVersion),
+            retrofitAdapter         :loadDependency(retrofitPackage, "adapter-rxjava2", retrofitVersion)
+    ]
+
+
+    daggerVersion = "2.25.2"
+    javaxVersion = "1"
+    javaxAnnotationVersion = "10.0-b28"
+
+    daggerPackage = "com.google.dagger"
+    javaxInjectorPackage = "javax.inject"
+    glassFishPackage = "org.glassfish"
+
+    daggerDependencies = [
+            javaxInjector           :loadDependency(javaxInjectorPackage, "javax.inject", javaxVersion),
+            daggerCompiler          :loadDependency(daggerPackage, "dagger-compiler", daggerVersion),
+            dagger                  :loadDependency(daggerPackage, "dagger", daggerVersion),
+            daggerAnnotation        :loadDependency(daggerPackage, "dagger-android-processor", daggerVersion),
+            daggerAndroid           :loadDependency(daggerPackage, "dagger-android-support", daggerVersion),
+            javaxAnnotation         :loadDependency(glassFishPackage, "javax.annotation", javaxAnnotationVersion)
+    ]
+
+    okHttpVersion = "3.4.1"
+    okHttpPackage = "com.squareup.okhttp3"
+
+    okHttpDepencies = [
+            okHttp                  :loadDependency(okHttpPackage, "okhttp", okHttpVersion),
+            okHttpInterceptor       :loadDependency(okHttpPackage, "logging-interceptor", okHttpVersion)
+    ]
+
+
+    rxJavaVersion = "2.2.15"
+    rxAndroidVersion = "2.1.1"
+    javaxPackage = "io.reactivex.rxjava2"
+
+    rxDepndencies = [
+            rxJava                  :loadDependency(javaxPackage, "rxjava", rxJavaVersion),
+            rxAndroid               :loadDependency(javaxPackage, "rxandroid", rxAndroidVersion)
+    ]
+}
+
+static String loadDependency(String pack, String dependency, String version){
+    return "${pack}:${dependency}:${version}"
+}

@@ -32,4 +32,25 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+
+    //retrofit
+    implementation retrofitDependencies.retrofit
+    implementation retrofitDependencies.retrofitConverterGson
+    implementation retrofitDependencies.retrofitAdapter
+
+    //rx
+    implementation rxDepndencies.rxJava
+    implementation rxDepndencies.rxAndroid
+
+    //okHttp
+    implementation okHttpDepencies.okHttp
+    implementation okHttpDepencies.okHttpInterceptor
+
+    //Dagger
+    implementation daggerDependencies.javaxInjector
+    implementation daggerDependencies.daggerCompiler
+    implementation daggerDependencies.dagger
+    implementation daggerDependencies.daggerAnnotation
+    implementation daggerDependencies.daggerAndroid
+    implementation daggerDependencies.javaxAnnotation
 }
