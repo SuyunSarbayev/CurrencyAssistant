@@ -13,6 +13,7 @@ class CurrencyListUseCases : BaseUseCase<Currency> {
 
     var currencyDomainRepository: CurrencyDomainRepository
     var params: HashMap<String, Any> = HashMap()
+
     @Inject
     constructor(@Named("executor_thread") executorThread: Scheduler,
                 @Named("ui_thread") uiThread: Scheduler,

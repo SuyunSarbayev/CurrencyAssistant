@@ -1,8 +1,12 @@
 apply plugin: 'com.android.application'
 
+apply plugin: 'kotlin-android-extensions'
+
 apply plugin: 'kotlin-android'
 
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+apply plugin: 'org.jetbrains.kotlin.android.extensions'
 
 android {
     compileSdkVersion 29
@@ -21,12 +25,27 @@ android {
             }
         }
     }
+    packagingOptions {
+        exclude 'META-INF/rxjava.properties'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8 // LAMBDA
+        targetCompatibility JavaVersion.VERSION_1_8 // LAMBDA
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+}
+
+kapt {
+    generateStubs = true
+    mapDiagnosticLocations = true
+}
+androidExtensions {
+    experimental = true
 }
 
 dependencies {
@@ -54,9 +73,8 @@ dependencies {
 
     //Dagger
     implementation daggerDependencies.javaxInjector
-    implementation daggerDependencies.daggerCompiler
+    annotationProcessor daggerDependencies.daggerCompiler
+    kapt daggerDependencies.daggerCompiler
     implementation daggerDependencies.dagger
-    implementation daggerDependencies.daggerAnnotation
-    implementation daggerDependencies.daggerAndroid
     implementation daggerDependencies.javaxAnnotation
 }
