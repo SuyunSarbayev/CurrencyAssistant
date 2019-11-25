@@ -1,5 +1,6 @@
 package android.test.currencyassistant.presentation.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.test.currencyassistant.R
 import android.test.currencyassistant.presentation.base.BaseActivity
@@ -13,7 +14,6 @@ import kotlinx.android.synthetic.main.activity_base.*
 import kotlinx.android.synthetic.main.fragment_currency.*
 
 class CurrencyFragment : BaseFragment() {
-
     override fun getFragmentTag(): String? {
         return this.javaClass.name
     }
@@ -23,11 +23,14 @@ class CurrencyFragment : BaseFragment() {
     }
 
     override fun customizeActionBar() {
-        var toolbar: Toolbar = mainActivity().findViewById(R.id.toolbar_activity_base) as Toolbar
-        mainActivity().setSupportActionBar(toolbar);
+        mainActivity().setSupportActionBar(activity?.toolbar_activity_base);
         mainActivity().supportActionBar!!.setDisplayShowHomeEnabled(true)
         activity?.toolbar_activity_base?.title = "Rates"
         activity?.toolbar_activity_base?.setTitleTextColor(resources.getColor(R.color.color_black))
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -36,11 +39,26 @@ class CurrencyFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-
         return rootView
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
     override fun onResume() {
         super.onResume()
+
+        customizeActionBar()
     }
+
+    companion object {
+        @JvmStatic
+        fun newInstance() = CurrencyFragment().apply {}
+    }
+
 }

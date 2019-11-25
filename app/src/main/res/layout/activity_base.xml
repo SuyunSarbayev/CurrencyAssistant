@@ -15,9 +15,11 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_activity_base"
             android:layout_width="match_parent"
-            android:background="@color/color_black"
+            android:background="@color/color_white"
+            android:minHeight="?attr/actionBarSize"
             app:elevation="0dp"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:titleMarginStart="72dp"
+            app:theme="@style/ProjectToolbarTheme"
             android:layout_height="?attr/actionBarSize">
 
         </androidx.appcompat.widget.Toolbar>
@@ -26,7 +28,6 @@
             android:id="@+id/relativelayout_activity_base_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
         </RelativeLayout>
     </LinearLayout>
 

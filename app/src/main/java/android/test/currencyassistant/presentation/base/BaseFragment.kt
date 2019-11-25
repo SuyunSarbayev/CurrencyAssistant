@@ -54,4 +54,6 @@ abstract class BaseFragment : Fragment() {
             )
         }
     }
+
+    companion object{}
 }
