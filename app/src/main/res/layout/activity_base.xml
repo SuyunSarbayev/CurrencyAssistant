@@ -1,28 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:id="@+id/relativelayout_activity_base_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/relativelayout_activity_base_toolbar"
+    <LinearLayout
+        android:id="@+id/linearlayout_activity_base_toolbar"
         android:layout_width="match_parent"
+        android:orientation="vertical"
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_activity_base"
             android:layout_width="match_parent"
+            android:background="@color/color_black"
+            app:elevation="0dp"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             android:layout_height="?attr/actionBarSize">
 
         </androidx.appcompat.widget.Toolbar>
-    </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/relativelayout_activity_base_fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        <RelativeLayout
+            android:id="@+id/relativelayout_activity_base_fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    </RelativeLayout>
+        </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>
