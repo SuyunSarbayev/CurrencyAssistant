@@ -9,23 +9,30 @@ import android.test.currencyassistant.domain.models.Currency
 import android.test.currencyassistant.presentation.adapters.currency.CurrencyAdapter
 import android.test.currencyassistant.presentation.base.BaseFragment
 import android.test.currencyassistant.presentation.contract.CurrencyFragmentContract
+import android.test.currencyassistant.presentation.interfaces.CurrencyClickInterface
+import android.test.currencyassistant.presentation.interfaces.TimerCallbackInterface
 import android.test.currencyassistant.presentation.presenter.CurrencyFragmentPresenter
+import android.test.currencyassistant.presentation.utils.TimerHelper
+import android.test.currencyassistant.presentation.utils.UtilCallback
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import kotlinx.android.synthetic.main.activity_base.*
 import kotlinx.android.synthetic.main.fragment_currency.*
 import javax.inject.Inject
 
-class CurrencyFragment : BaseFragment(), CurrencyFragmentContract.View {
+
+class CurrencyFragment : BaseFragment(), CurrencyFragmentContract.View, TimerCallbackInterface, CurrencyClickInterface {
 
     @Inject lateinit var presenter: CurrencyFragmentPresenter
 
     lateinit var layoutManager: LinearLayoutManager
     lateinit var currencyAdapter: CurrencyAdapter
     var currencyList: ArrayList<Currency.CurrencyItem> = ArrayList()
+
+    var timer: TimerHelper? = null
 
     var currentCurrency = "EUR"
 
@@ -42,6 +49,10 @@ class CurrencyFragment : BaseFragment(), CurrencyFragmentContract.View {
         mainActivity().supportActionBar!!.setDisplayShowHomeEnabled(true)
         activity?.toolbar_activity_base?.title = "Rates"
         activity?.toolbar_activity_base?.setTitleTextColor(resources.getColor(R.color.color_black))
+    }
+
+    override fun initializeTimer() {
+        timer = TimerHelper(1000, this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,7 +77,7 @@ class CurrencyFragment : BaseFragment(), CurrencyFragmentContract.View {
         initializeAdapter()
         initializeLayoutManager()
         initializeListeners()
-        currencyList()
+        initializeTimer()
     }
 
     override fun onAttach(context: Context) {
@@ -77,25 +88,21 @@ class CurrencyFragment : BaseFragment(), CurrencyFragmentContract.View {
         super.onDestroy()
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        customizeActionBar()
-    }
-
     companion object {
         @JvmStatic
         fun newInstance() = CurrencyFragment().apply {}
     }
 
     override fun processCurrency(currency: Currency) {
+        val diffResult = DiffUtil.calculateDiff(UtilCallback(this.currencyList, currency.currencyList))
+        diffResult.dispatchUpdatesTo(currencyAdapter)
+
         this.currencyList.clear()
         this.currencyList.addAll(currency.currencyList)
-        currencyAdapter.notifyDataSetChanged()
     }
 
     override fun initializeAdapter() {
-        currencyAdapter = CurrencyAdapter(context, currencyList)
+        currencyAdapter = CurrencyAdapter(context, currencyList, this)
         recyclerview_fragment_currency.adapter = currencyAdapter
     }
 
@@ -109,6 +116,10 @@ class CurrencyFragment : BaseFragment(), CurrencyFragmentContract.View {
     }
 
     override fun initializeViewsData() {
+        recyclerview_fragment_currency.setHasFixedSize(true);
+        recyclerview_fragment_currency.setItemViewCacheSize(20);
+        recyclerview_fragment_currency.setDrawingCacheEnabled(true);
+        recyclerview_fragment_currency.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
     }
 
     override fun initializeListeners() {
@@ -132,5 +143,35 @@ class CurrencyFragment : BaseFragment(), CurrencyFragmentContract.View {
 
     override fun currencyList() {
         presenter.currencyList(currentCurrency)
+    }
+
+    override fun onTimerTicked() {
+        currencyList()
+    }
+
+    override fun onStart() {
+        super.onStart()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        timer?.pause()
+    }
+
+    override fun onPause() {
+        super.onPause()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        timer?.cancel()
+    }
+    override fun onResume() {
+        super.onResume()
+        timer?.initializeTimer()
+    }
+
+    override fun onViewClicked(position: Int) {
+        currentCurrency = currencyList.get(position).currencyName!!
     }
 }

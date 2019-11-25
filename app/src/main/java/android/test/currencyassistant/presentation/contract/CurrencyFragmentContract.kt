@@ -16,6 +16,8 @@ interface CurrencyFragmentContract {
         fun currencyList()
 
         fun initializeDependencies()
+
+        fun initializeTimer()
     }
 
     interface Presenter : BasePresenter<View>{
