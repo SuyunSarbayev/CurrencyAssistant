@@ -1,12 +1,21 @@
 apply plugin: 'com.android.application'
 
+apply plugin: 'kotlin-android-extensions'
+
 apply plugin: 'kotlin-android'
 
-apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+apply plugin: 'org.jetbrains.kotlin.android.extensions'
 
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
+    dexOptions {
+        incremental = true;
+        preDexLibraries = false
+        javaMaxHeapSize "4g" // 2g should be also OK
+    }
     defaultConfig {
         applicationId "android.test.currencyassistant"
         minSdkVersion 18
@@ -14,6 +23,19 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath true
+            }
+        }
+    }
+    packagingOptions {
+        exclude 'META-INF/rxjava.properties'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8 // LAMBDA
+        targetCompatibility JavaVersion.VERSION_1_8 // LAMBDA
     }
     buildTypes {
         release {
@@ -21,6 +43,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+}
+
+kapt {
+    generateStubs = true
+    mapDiagnosticLocations = true
+}
+androidExtensions {
+    experimental = true
 }
 
 dependencies {
@@ -48,9 +78,8 @@ dependencies {
 
     //Dagger
     implementation daggerDependencies.javaxInjector
-    implementation daggerDependencies.daggerCompiler
+    annotationProcessor daggerDependencies.daggerCompiler
+    kapt daggerDependencies.daggerCompiler
     implementation daggerDependencies.dagger
-    implementation daggerDependencies.daggerAnnotation
-    implementation daggerDependencies.daggerAndroid
     implementation daggerDependencies.javaxAnnotation
 }
