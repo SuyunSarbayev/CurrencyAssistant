@@ -57,6 +57,13 @@ ext{
             recyclerView            :loadDependency(recyclerViewPackage,"recyclerview",recyclerViewVersion),
             support                 :loadDependency(supportPackage,"legacy-support-v4",supportVersion)
     ]
+
+    picassoVersion = "2.71828"
+    picassoPackage = "com.squareup.picasso"
+
+    picassoDependencies = [
+            picasso:                loadDependency(picassoPackage, "picasso", picassoVersion)
+    ]
 }
 
 static String loadDependency(String pack, String dependency, String version){

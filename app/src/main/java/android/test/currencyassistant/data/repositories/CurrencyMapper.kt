@@ -15,6 +15,12 @@ class CurrencyMapper {
     }
 
     fun transformCurrency(currencyEntity: CurrencyEntity?): Currency{
+        for(key in currencyEntity?.rates?.keys!!){
+            currencyEntity.currencyList.add(CurrencyEntity().CurrencyItem().apply {
+                currencyName = key
+                currencyPrice = currencyEntity.rates?.get(key) as Double
+            })
+        }
         var currencyModel: Currency = (gson.fromJson(gson.toJson(currencyEntity), Currency::class.java) as Currency)
         return currencyModel
     }

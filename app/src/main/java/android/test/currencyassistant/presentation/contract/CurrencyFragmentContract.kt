@@ -12,6 +12,10 @@ interface CurrencyFragmentContract {
         fun initializeAdapter()
 
         fun initializeLayoutManager()
+
+        fun currencyList()
+
+        fun initializeDependencies()
     }
 
     interface Presenter : BasePresenter<View>{

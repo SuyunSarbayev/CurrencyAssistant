@@ -86,4 +86,6 @@ dependencies {
     implementation defaultDependencies.appCompat
     implementation defaultDependencies.recyclerView
     implementation defaultDependencies.support
+
+    implementation picassoDependencies.picasso
 }
