@@ -43,6 +43,20 @@ ext{
             rxJava                  :loadDependency(javaxPackage, "rxjava", rxJavaVersion),
             rxAndroid               :loadDependency(javaxPackage, "rxandroid", rxAndroidVersion)
     ]
+
+    appCompatVersion = "1.1.0"
+    recyclerViewVersion = "1.1.0"
+    supportVersion = "1.0.0"
+
+    appCompatPackage = "androidx.appcompat"
+    recyclerViewPackage = "androidx.recyclerview"
+    supportPackage = "androidx.legacy"
+
+    defaultDependencies = [
+            appCompat               :loadDependency(appCompatPackage,"appcompat",appCompatVersion),
+            recyclerView            :loadDependency(recyclerViewPackage,"recyclerview",recyclerViewVersion),
+            support                 :loadDependency(supportPackage,"legacy-support-v4",supportVersion)
+    ]
 }
 
 static String loadDependency(String pack, String dependency, String version){

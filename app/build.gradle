@@ -82,4 +82,8 @@ dependencies {
     kapt daggerDependencies.daggerCompiler
     implementation daggerDependencies.dagger
     implementation daggerDependencies.javaxAnnotation
+
+    implementation defaultDependencies.appCompat
+    implementation defaultDependencies.recyclerView
+    implementation defaultDependencies.support
 }
