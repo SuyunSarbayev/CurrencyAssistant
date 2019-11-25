@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.test.currencyassistant.R
 import android.test.currencyassistant.di.components.DaggerNetworkComponent
 import android.test.currencyassistant.di.components.NetworkComponent
+import android.test.currencyassistant.di.modules.NetworkModule
 import android.test.currencyassistant.domain.models.Currency
 import android.test.currencyassistant.domain.usecases.CurrencyListUseCases
 import io.reactivex.observers.DisposableSingleObserver
@@ -21,7 +22,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        networkComponent = DaggerNetworkComponent.builder().build()
+        networkComponent = DaggerNetworkComponent
+            .builder()
+            .networkModule(NetworkModule(this))
+            .build()
         networkComponent?.inject(this)
 
         useCase.initializeParams(HashMap<String, Any>().apply {

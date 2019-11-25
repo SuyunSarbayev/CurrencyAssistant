@@ -8,6 +8,6 @@ import retrofit2.http.QueryMap
 
 interface Api {
 
-    @GET(ApiConstants.BASE_URL + ApiConstants.END_POINT_CURRENCIES_LATEST)
+    @GET(ApiConstants.END_POINT_CURRENCIES_LATEST)
     fun currenciesList(@QueryMap params: HashMap<String, Any>) : Single<Response<CurrencyEntity>>
 }

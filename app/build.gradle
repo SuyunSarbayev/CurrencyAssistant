@@ -11,6 +11,11 @@ apply plugin: 'org.jetbrains.kotlin.android.extensions'
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
+    dexOptions {
+        incremental = true;
+        preDexLibraries = false
+        javaMaxHeapSize "4g" // 2g should be also OK
+    }
     defaultConfig {
         applicationId "android.test.currencyassistant"
         minSdkVersion 18

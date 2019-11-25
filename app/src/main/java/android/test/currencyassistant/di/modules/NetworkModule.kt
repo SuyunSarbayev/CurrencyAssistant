@@ -1,9 +1,15 @@
 package android.test.currencyassistant.di.modules
 
+import android.app.Application
+import android.content.Context
+import android.os.Build
 import android.test.currencyassistant.BuildConfig
 import android.test.currencyassistant.data.api.ApiConstants
 import android.test.currencyassistant.data.repositories.CurrencyDataRepository
+import android.test.currencyassistant.data.utils.UnsafeOkHttpClient
 import android.test.currencyassistant.domain.repository.CurrencyDomainRepository
+import android.util.Log
+import androidx.annotation.Nullable
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -13,19 +19,39 @@ import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.Cache
+import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
+import okhttp3.TlsVersion
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Named
 import javax.inject.Singleton
+import javax.net.ssl.SSLContext
 
 @Module
 class NetworkModule {
 
-    constructor()
+    var context: Context
+
+    constructor(context: Context){
+        this.context = context
+    }
+
+    @Provides
+    fun providesCurrencyDomainRepository(currencyDataRepository: CurrencyDataRepository) : CurrencyDomainRepository{
+        return currencyDataRepository
+    }
+
+    @Provides
+    @Singleton
+    public fun providesOkHttpCache(): Cache {
+        val cacheSize = 50 * 1024 * 1024
+        return Cache(context.cacheDir, cacheSize.toLong())
+    }
 
     @Provides
     @Singleton
@@ -48,25 +74,12 @@ class NetworkModule {
             .build()
     }
 
-    @Provides
-    fun providesCurrencyDomainRepository(currencyDataRepository: CurrencyDataRepository) : CurrencyDomainRepository{
-        return currencyDataRepository
-    }
-
     //When application in debug mode, we can track request body, otherwise, we consider that we got
     //production build
     @Provides
     @Singleton
-    fun providesOkHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder()
-            .connectTimeout(30000, TimeUnit.MICROSECONDS)
-            .readTimeout(30000, TimeUnit.MILLISECONDS)
-            .writeTimeout(30000, TimeUnit.MILLISECONDS)
-            .addInterceptor(if(BuildConfig.DEBUG)
-                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-            else
-                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.NONE))
-            .build()
+    fun providesOkHttpClient(cache: Cache): OkHttpClient {
+        return UnsafeOkHttpClient.unsafeOkHttpClient
     }
 
     @Provides
