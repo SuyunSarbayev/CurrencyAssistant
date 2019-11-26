@@ -17,9 +17,10 @@ class CurrencyFragmentPresenter : CurrencyFragmentContract.Presenter {
         this.currencyListUseCases = currencyListUseCases
     }
 
-    override fun currencyList(currentCurrency: String) {
+    override fun currencyList(currentCurrency: Currency.CurrencyItem) {
         currencyListUseCases.initializeParams(HashMap<String, Any>().apply{
-            put(Constants.DataConstants.currency_key, currentCurrency)
+            put(Constants.DataConstants.currency_key, currentCurrency.currencyName as String)
+            put(Constants.DataConstants.currency_amount, currentCurrency.currencyPrice as Double)
         })
         currencyListUseCases.execute(CurrencyListObserver())
     }

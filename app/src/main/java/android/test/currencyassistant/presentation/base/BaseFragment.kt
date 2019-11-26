@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
+
 
 abstract class BaseFragment : Fragment() {
 
@@ -46,12 +48,15 @@ abstract class BaseFragment : Fragment() {
 
     open fun hideKeyboard() {
         if (context != null) {
-            val imm =
-                context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            if (imm != null && rootView != null) imm.hideSoftInputFromWindow(
-                rootView.getWindowToken(),
-                0
-            )
+            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(rootView.getWindowToken(), 0)
+        }
+    }
+
+    open fun openKeyboard(){
+        if (context != null) {
+            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+            imm!!.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
         }
     }
 

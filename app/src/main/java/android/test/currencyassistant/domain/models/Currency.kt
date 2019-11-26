@@ -25,14 +25,18 @@ class Currency {
 
         @SerializedName("currency_price")
         var currencyPrice: Double? = null
+
+        @SerializedName("currency_icon")
+        var currencyIcon: Int? = null
+
         override fun toString(): String {
-            return "Currency(currencyName=$currencyName, currencyPrice=$currencyPrice)"
+            return "CurrencyItem(currencyName=$currencyName, currencyPrice=$currencyPrice, currencyIcon=$currencyIcon)"
         }
 
 
     }
 
     override fun toString(): String {
-        return "CurrencyEntity(base=$base, date=$date, rates=$rates, currencyList=$currencyList)"
+        return "CurrencyEntity(currencyList=$currencyList)"
     }
 }

@@ -14,7 +14,8 @@ class UtilCallback(oldList: ArrayList<Currency.CurrencyItem>, newList : ArrayLis
     }
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList?.get(oldItemPosition)?.currencyName == newList?.get(newItemPosition)?.currencyName
+        return oldList?.get(oldItemPosition)?.currencyName == newList?.get(newItemPosition)?.currencyName &&
+                oldList?.get(oldItemPosition)?.currencyPrice == newList?.get(newItemPosition)?.currencyPrice
     }
 
     override fun getOldListSize(): Int {
