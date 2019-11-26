@@ -23,6 +23,9 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ItemAnimator
+import androidx.recyclerview.widget.SimpleItemAnimator
 import kotlinx.android.synthetic.main.activity_base.*
 import kotlinx.android.synthetic.main.fragment_currency.*
 import java.util.*
@@ -117,10 +120,9 @@ class CurrencyFragment : BaseFragment(), CurrencyFragmentContract.View, TimerCal
     }
 
     override fun initializeAdapter() {
+        //recyclerview_fragment_currency.itemAnimator = null
         currencyAdapter = CurrencyAdapter(context, currencyList, this, this)
         recyclerview_fragment_currency.adapter = currencyAdapter
-        currencyAdapter.setHasStableIds(true)
-        recyclerview_fragment_currency.getItemAnimator().setS
     }
 
     override fun initializeLayoutManager() {
@@ -167,6 +169,16 @@ class CurrencyFragment : BaseFragment(), CurrencyFragmentContract.View, TimerCal
         progress_fragment_currency_loader.visibility = View.GONE
     }
 
+    override fun displayEmptyPage() {
+        recyclerview_fragment_currency.visibility = View.GONE
+        linearlayout_fragment_currency_empty_layout.visibility = View.VISIBLE
+    }
+
+    override fun dismissEmptyPage() {
+        linearlayout_fragment_currency_empty_layout.visibility = View.GONE
+        recyclerview_fragment_currency.visibility = View.VISIBLE
+    }
+
     override fun processError(withText: String) {}
 
     override fun initializeDependencies() {
@@ -205,6 +217,7 @@ class CurrencyFragment : BaseFragment(), CurrencyFragmentContract.View, TimerCal
 
     override fun onResume() {
         super.onResume()
+        displayLoader()
         timer?.initializeTimer()
     }
 
@@ -220,10 +233,9 @@ class CurrencyFragment : BaseFragment(), CurrencyFragmentContract.View, TimerCal
     }
 
     override fun onCurrencyValueUpdated(position: Int, value: String) {
-        displayLoader()
-        when(value.length > 0){
+        when(value.length > 0 && value.toDouble() > 0){
             true -> currentCurrency.currencyPrice = value.toDouble()
-            false -> currentCurrency.currencyPrice = 0.0
+            false -> currentCurrency.currencyPrice = 1.0
         }
     }
 }

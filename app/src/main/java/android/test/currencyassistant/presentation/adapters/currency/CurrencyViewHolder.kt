@@ -1,7 +1,6 @@
 package android.test.currencyassistant.presentation.adapters.currency
 
 import android.content.Context
-import android.test.currencyassistant.R
 import android.test.currencyassistant.domain.models.Currency
 import android.test.currencyassistant.presentation.interfaces.CurrencyClickInterface
 import android.test.currencyassistant.presentation.interfaces.CurrencyValueUpdatedCallback
@@ -12,7 +11,10 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_currency.view.*
-import kotlinx.android.synthetic.main.item_currency.*
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.*
+
 
 class CurrencyViewHolder(itemView: View,
                          context: Context?,
@@ -45,7 +47,10 @@ class CurrencyViewHolder(itemView: View,
 
     fun initializeData(currencyItem: Currency.CurrencyItem){
         itemView.textview_item_currency_title.text = currencyItem.currencyName
-        itemView.edittext_item_currency_value.setText(currencyItem.currencyPrice.toString())
+        AnimationHelper.switchTextAnimation(itemView.edittext_item_currency_value,
+            DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH)).apply {
+                maximumFractionDigits = 340
+            }.format(currencyItem.currencyPrice).toString())
     }
 
     fun initializeIcon(currencyItem: Currency.CurrencyItem){

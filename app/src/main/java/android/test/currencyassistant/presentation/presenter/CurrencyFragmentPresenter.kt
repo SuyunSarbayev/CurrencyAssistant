@@ -36,11 +36,13 @@ class CurrencyFragmentPresenter : CurrencyFragmentContract.Presenter {
     inner class CurrencyListObserver : DisposableSingleObserver<Currency>(){
         override fun onSuccess(result: Currency) {
             view.dismissLoader()
+            view.dismissEmptyPage()
             view.processCurrency(result)
         }
 
         override fun onError(e: Throwable) {
             view.dismissLoader()
+            view.displayEmptyPage()
             view.processError(e.localizedMessage)
         }
 

@@ -27,6 +27,9 @@ interface CurrencyFragmentContract {
 
         fun initiateFocusFirstElement()
 
+        fun displayEmptyPage()
+
+        fun dismissEmptyPage()
     }
 
     interface Presenter : BasePresenter<View>{

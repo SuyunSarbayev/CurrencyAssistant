@@ -9,6 +9,14 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'org.jetbrains.kotlin.android.extensions'
 
 android {
+    signingConfigs {
+        release {
+            storePassword 'CurrencyAssistant'
+            keyPassword 'CurrencyAssistant'
+            keyAlias = 'Currency'
+            storeFile file('keystore/build_key.jks')
+        }
+    }
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     dexOptions {
@@ -38,6 +46,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8 // LAMBDA
     }
     buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            debuggable true
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'

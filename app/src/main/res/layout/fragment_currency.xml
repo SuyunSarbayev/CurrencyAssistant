@@ -12,6 +12,33 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
+    <LinearLayout
+        android:id="@+id/linearlayout_fragment_currency_empty_layout"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:src="@drawable/ic_currency_list_empty"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content">
+
+        </ImageView>
+
+        <TextView
+            android:id="@+id/textview_fragment_currency_empty"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/roboto_light"
+            android:text="@string/empty_currency_description"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+    </LinearLayout>
+
     <ProgressBar
         android:id="@+id/progress_fragment_currency_loader"
         android:indeterminateDrawable="@drawable/project_progress_gradient_circle"
