@@ -36,6 +36,8 @@ interface CurrencyFragmentContract {
         fun registerCurrencyReceiver()
 
         fun unregisterCurrencyReceiver()
+
+        fun initializeRecyclerView()
     }
 
     interface Presenter : BasePresenter<View>{

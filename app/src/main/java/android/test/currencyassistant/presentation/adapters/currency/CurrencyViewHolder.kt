@@ -31,6 +31,10 @@ class CurrencyViewHolder(itemView: View,
     var currencyValueUpdatedCallback: CurrencyValueUpdatedCallback
     var picasso: Picasso
 
+    var decimalFormat: DecimalFormat = DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH)).apply {
+        maximumFractionDigits = 340
+    }
+
     init {
         this.currencyClickInterface = currencyClickInterface
         this.context = context
@@ -50,9 +54,7 @@ class CurrencyViewHolder(itemView: View,
 
     fun initializeData(currencyItem: Currency.CurrencyItem){
         itemView.textview_item_currency_title.text = currencyItem.currencyName
-        itemView.edittext_item_currency_value.setText(DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH)).apply {
-            maximumFractionDigits = 340
-        }.format(currencyItem.currencyPrice).toString())
+        itemView.edittext_item_currency_value.setText(decimalFormat.format(currencyItem.currencyPrice).toString())
     }
 
     fun initializeIcon(currencyItem: Currency.CurrencyItem){

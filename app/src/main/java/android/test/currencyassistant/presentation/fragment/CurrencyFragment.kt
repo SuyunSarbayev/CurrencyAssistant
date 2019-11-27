@@ -85,6 +85,7 @@ class CurrencyFragment : BaseFragment(), CurrencyFragmentContract.View, TimerCal
         initializeViewsData()
         initializeAdapter()
         initializeLayoutManager()
+        initializeRecyclerView()
         initializeListeners()
     }
 
@@ -131,8 +132,15 @@ class CurrencyFragment : BaseFragment(), CurrencyFragmentContract.View, TimerCal
         this.currencyList.addAll(currency.currencyList)
     }
 
-    override fun initializeAdapter() {
+    override fun initializeRecyclerView() {
         //recyclerview_fragment_currency.itemAnimator = null
+        recyclerview_fragment_currency.setHasFixedSize(true);
+        recyclerview_fragment_currency.setItemViewCacheSize(20);
+        recyclerview_fragment_currency.setDrawingCacheEnabled(true);
+        recyclerview_fragment_currency.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+
+    }
+    override fun initializeAdapter() {
         currencyAdapter = CurrencyAdapter(context, currencyList, this, this)
         recyclerview_fragment_currency.adapter = currencyAdapter
     }
