@@ -10,7 +10,7 @@ import androidx.test.uiautomator.Until
 private const val LAUNCH_TIMEOUT = 5000L
 private const val BASIC_PACKAGE = "android.test.currenyassistant"
 
-open class TestApplication {
+open class CurrencyApplication {
 
     lateinit var device: UiDevice
     lateinit var pageObject: PageObject
