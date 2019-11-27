@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CurrencyAssistant</string>
+    <string name="app_name">Currency Assistant</string>
 
     <string name="empty_currency_description">Sorry, can\'t load any currencies</string>
 </resources>
