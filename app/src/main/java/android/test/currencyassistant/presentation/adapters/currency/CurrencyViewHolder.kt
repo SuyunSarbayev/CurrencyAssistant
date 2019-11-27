@@ -8,6 +8,7 @@ import android.test.currencyassistant.presentation.utils.AnimationHelper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_currency.view.*
@@ -35,6 +36,8 @@ class CurrencyViewHolder(itemView: View,
         this.context = context
         this.currencyValueUpdatedCallback = currencyValueUpdatedCallback
         this.picasso = Picasso.get()
+
+        initializeCurrencyField()
     }
 
     fun bind(currencyItem: Currency.CurrencyItem){
@@ -47,14 +50,13 @@ class CurrencyViewHolder(itemView: View,
 
     fun initializeData(currencyItem: Currency.CurrencyItem){
         itemView.textview_item_currency_title.text = currencyItem.currencyName
-        AnimationHelper.switchTextAnimation(itemView.edittext_item_currency_value,
-            DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH)).apply {
-                maximumFractionDigits = 340
-            }.format(currencyItem.currencyPrice).toString())
+        itemView.edittext_item_currency_value.setText(DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH)).apply {
+            maximumFractionDigits = 340
+        }.format(currencyItem.currencyPrice).toString())
     }
 
     fun initializeIcon(currencyItem: Currency.CurrencyItem){
-        //itemView.imageview_item_currency_icon.setImageResource(currencyItem.currencyIcon!!)
+        itemView.imageview_item_currency_icon.setImageResource(currencyItem.currencyIcon!!)
     }
 
     fun initializeListeners(){
@@ -66,6 +68,12 @@ class CurrencyViewHolder(itemView: View,
     fun initiateFocus(){
         itemView.edittext_item_currency_value.requestFocus()
         itemView.edittext_item_currency_value.setSelection(itemView.edittext_item_currency_value.length())
+    }
+
+    fun initializeCurrencyField(){
+        itemView.edittext_item_currency_value.setImeOptions(EditorInfo.IME_ACTION_DONE)
+        itemView.edittext_item_currency_value.setFocusable(true)
+        itemView.edittext_item_currency_value.setFocusableInTouchMode(true)
     }
 
     override fun onClick(v: View?) {

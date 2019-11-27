@@ -113,10 +113,8 @@ class CurrencyFragment : BaseFragment(), CurrencyFragmentContract.View, TimerCal
 
         initiateUpdateCurrencyList(this.currencyList, currency.currencyList)
 
-        recyclerview_fragment_currency.isEnabled = false
         this.currencyList.clear()
         this.currencyList.addAll(currency.currencyList)
-        recyclerview_fragment_currency.isEnabled = true
     }
 
     override fun initializeAdapter() {
