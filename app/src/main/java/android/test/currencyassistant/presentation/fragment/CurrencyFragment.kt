@@ -1,6 +1,9 @@
 package android.test.currencyassistant.presentation.fragment
 
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.test.currencyassistant.R
 import android.test.currencyassistant.di.components.DaggerNetworkComponent
@@ -14,8 +17,8 @@ import android.test.currencyassistant.presentation.interfaces.CurrencyClickInter
 import android.test.currencyassistant.presentation.interfaces.CurrencyValueUpdatedCallback
 import android.test.currencyassistant.presentation.interfaces.TimerCallbackInterface
 import android.test.currencyassistant.presentation.presenter.CurrencyFragmentPresenter
+import android.test.currencyassistant.presentation.service.CurrencyService
 import android.test.currencyassistant.presentation.utils.Constants
-import android.test.currencyassistant.presentation.utils.TimerHelper
 import android.test.currencyassistant.presentation.utils.UtilCallback
 import android.view.LayoutInflater
 import android.view.View
@@ -23,9 +26,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ItemAnimator
-import androidx.recyclerview.widget.SimpleItemAnimator
 import kotlinx.android.synthetic.main.activity_base.*
 import kotlinx.android.synthetic.main.fragment_currency.*
 import java.util.*
@@ -41,7 +41,7 @@ class CurrencyFragment : BaseFragment(), CurrencyFragmentContract.View, TimerCal
     lateinit var currencyAdapter: CurrencyAdapter
     var currencyList: ArrayList<Currency.CurrencyItem> = ArrayList()
 
-    var timer: TimerHelper? = null
+    var currencyUpdateReceiver: CurrencyUpdateReceiver = CurrencyUpdateReceiver()
 
     var currentCurrency = Currency().CurrencyItem().apply {
         currencyName = "EUR"
@@ -62,10 +62,6 @@ class CurrencyFragment : BaseFragment(), CurrencyFragmentContract.View, TimerCal
         mainActivity().supportActionBar!!.setDisplayShowHomeEnabled(true)
         activity?.toolbar_activity_base?.title = Constants.PageConstants.rates_title
         activity?.toolbar_activity_base?.setTitleTextColor(ContextCompat.getColor(context!!, R.color.color_black))
-    }
-
-    override fun initializeTimer() {
-        timer = TimerHelper(1000, this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,7 +86,6 @@ class CurrencyFragment : BaseFragment(), CurrencyFragmentContract.View, TimerCal
         initializeAdapter()
         initializeLayoutManager()
         initializeListeners()
-        initializeTimer()
     }
 
     override fun onAttach(context: Context) {
@@ -99,11 +94,30 @@ class CurrencyFragment : BaseFragment(), CurrencyFragmentContract.View, TimerCal
 
     override fun onDestroy() {
         super.onDestroy()
+        presenter.dispose()
+        unregisterCurrencyReceiver()
     }
 
     companion object {
         @JvmStatic
         fun newInstance() = CurrencyFragment().apply {}
+    }
+
+    override fun startCurrencyUpdateService() {
+        context?.startService(Intent(context, CurrencyService::class.java))
+    }
+
+    override fun stopCurrencyUpdateService() {
+        context?.stopService(Intent(context, CurrencyService::class.java))
+    }
+
+    override fun registerCurrencyReceiver() {
+        context?.registerReceiver(currencyUpdateReceiver,
+            IntentFilter(Constants.PageConstants.update_currency_action))
+    }
+
+    override fun unregisterCurrencyReceiver() {
+        context?.unregisterReceiver(currencyUpdateReceiver)
     }
 
     override fun processCurrency(currency: Currency) {
@@ -152,7 +166,6 @@ class CurrencyFragment : BaseFragment(), CurrencyFragmentContract.View, TimerCal
     override fun initiateFocusFirstElement() {
         layoutManager.scrollToPosition(0)
         (recyclerview_fragment_currency.findViewHolderForAdapterPosition(0) as CurrencyViewHolder).initiateFocus()
-        openKeyboard()
     }
 
     override fun initiateMoveElementToTop(position: Int) {
@@ -196,12 +209,12 @@ class CurrencyFragment : BaseFragment(), CurrencyFragmentContract.View, TimerCal
 
     override fun onStart() {
         super.onStart()
+        registerCurrencyReceiver()
     }
 
     override fun onStop() {
         super.onStop()
-        presenter.dispose()
-        timer?.cancelTimer()
+        stopCurrencyUpdateService()
     }
 
     override fun onPause() {
@@ -210,13 +223,13 @@ class CurrencyFragment : BaseFragment(), CurrencyFragmentContract.View, TimerCal
 
     override fun onDestroyView() {
         super.onDestroyView()
-        timer?.cancelTimer()
+        stopCurrencyUpdateService()
     }
 
     override fun onResume() {
         super.onResume()
         displayLoader()
-        timer?.initializeTimer()
+        startCurrencyUpdateService()
     }
 
     override fun onViewClicked(position: Int) {
@@ -234,6 +247,12 @@ class CurrencyFragment : BaseFragment(), CurrencyFragmentContract.View, TimerCal
         when(value.length > 0 && value.toDouble() > 0){
             true -> currentCurrency.currencyPrice = value.toDouble()
             false -> currentCurrency.currencyPrice = 1.0
+        }
+    }
+
+    inner class CurrencyUpdateReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            currencyList()
         }
     }
 }

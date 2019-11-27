@@ -4,11 +4,11 @@ import android.content.Context
 import android.test.currencyassistant.domain.models.Currency
 import android.test.currencyassistant.presentation.interfaces.CurrencyClickInterface
 import android.test.currencyassistant.presentation.interfaces.CurrencyValueUpdatedCallback
-import android.test.currencyassistant.presentation.utils.AnimationHelper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_currency.view.*
@@ -81,7 +81,17 @@ class CurrencyViewHolder(itemView: View,
     }
 
     override fun onFocusChange(v: View?, hasFocus: Boolean) {
-        when(hasFocus) {true -> currencyClickInterface.onViewClicked(adapterPosition)}
+        when(hasFocus) {
+            true -> {
+                openKeyboard(v)
+                currencyClickInterface.onViewClicked(adapterPosition)
+            }
+        }
+    }
+
+    fun openKeyboard(view: View?){
+        val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
     }
 
     override fun afterTextChanged(s: Editable?) {

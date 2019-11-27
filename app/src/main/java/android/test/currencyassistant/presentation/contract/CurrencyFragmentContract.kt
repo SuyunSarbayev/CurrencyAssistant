@@ -17,8 +17,6 @@ interface CurrencyFragmentContract {
 
         fun initializeDependencies()
 
-        fun initializeTimer()
-
         fun initializeCurrentCurrency(position: Int)
 
         fun initiateMoveElementToTop(position: Int)
@@ -30,6 +28,14 @@ interface CurrencyFragmentContract {
         fun displayEmptyPage()
 
         fun dismissEmptyPage()
+
+        fun startCurrencyUpdateService()
+
+        fun stopCurrencyUpdateService()
+
+        fun registerCurrencyReceiver()
+
+        fun unregisterCurrencyReceiver()
     }
 
     interface Presenter : BasePresenter<View>{
