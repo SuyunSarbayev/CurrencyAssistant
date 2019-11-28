@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuite name="android.test.currencyassistant.pageobjects.CurrencyFragmentPageObject" tests="1" failures="0" errors="0" skipped="0" time="18.0" timestamp="2019-11-28T05:18:37" hostname="localhost">
+  <properties>
+    <property name="device" value="Nexus_One_API_24(AVD) - 7.0" />
+    <property name="flavor" value="" />
+    <property name="project" value="app" />
+  </properties>
+  <testcase name="mainTest" classname="android.test.currencyassistant.pageobjects.CurrencyFragmentPageObject" time="18.543" />
+</testsuite>

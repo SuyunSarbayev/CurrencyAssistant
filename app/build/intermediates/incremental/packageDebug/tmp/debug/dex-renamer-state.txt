@@ -1,0 +1,4 @@
+#Thu Nov 28 11:18:06 GMT+06:00 2019
+base.0=C\:\\Users\\User\\AndroidStudioProjects\\CurrencyAssistant\\app\\build\\intermediates\\dex\\debug\\mergeDexDebug\\out\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
