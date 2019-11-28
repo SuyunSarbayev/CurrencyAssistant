@@ -4,6 +4,7 @@ import android.test.currencyassistant.domain.models.Currency
 import android.test.currencyassistant.domain.usecases.CurrencyListUseCases
 import android.test.currencyassistant.presentation.contract.CurrencyFragmentContract
 import android.test.currencyassistant.presentation.utils.Constants
+import android.test.currencyassistant.presentation.utils.ErrorHelper
 import io.reactivex.observers.DisposableSingleObserver
 import javax.inject.Inject
 
@@ -11,10 +12,13 @@ class CurrencyFragmentPresenter : CurrencyFragmentContract.Presenter {
 
     lateinit var view: CurrencyFragmentContract.View
     var currencyListUseCases: CurrencyListUseCases
+    var errorHelper: ErrorHelper
 
     @Inject
-    constructor(currencyListUseCases: CurrencyListUseCases){
+    constructor(currencyListUseCases: CurrencyListUseCases,
+                errorHelper: ErrorHelper){
         this.currencyListUseCases = currencyListUseCases
+        this.errorHelper = errorHelper
     }
 
     override fun currencyList(currentCurrency: Currency.CurrencyItem) {
@@ -43,7 +47,7 @@ class CurrencyFragmentPresenter : CurrencyFragmentContract.Presenter {
         override fun onError(e: Throwable) {
             view.dismissLoader()
             view.displayEmptyPage()
-            view.processError(e.localizedMessage)
+            view.processError(errorHelper.processError(e, view.context()))
         }
 
     }

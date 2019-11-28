@@ -15,7 +15,6 @@ import android.test.currencyassistant.presentation.base.BaseFragment
 import android.test.currencyassistant.presentation.contract.CurrencyFragmentContract
 import android.test.currencyassistant.presentation.interfaces.CurrencyClickInterface
 import android.test.currencyassistant.presentation.interfaces.CurrencyValueUpdatedCallback
-import android.test.currencyassistant.presentation.interfaces.TimerCallbackInterface
 import android.test.currencyassistant.presentation.presenter.CurrencyFragmentPresenter
 import android.test.currencyassistant.presentation.service.CurrencyService
 import android.test.currencyassistant.presentation.utils.Constants
@@ -23,6 +22,7 @@ import android.test.currencyassistant.presentation.utils.UtilCallback
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,7 +33,7 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 
-class CurrencyFragment : BaseFragment(), CurrencyFragmentContract.View, TimerCallbackInterface, CurrencyClickInterface, CurrencyValueUpdatedCallback {
+class CurrencyFragment : BaseFragment(), CurrencyFragmentContract.View, CurrencyClickInterface, CurrencyValueUpdatedCallback {
 
     @Inject lateinit var presenter: CurrencyFragmentPresenter
 
@@ -66,6 +66,10 @@ class CurrencyFragment : BaseFragment(), CurrencyFragmentContract.View, TimerCal
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+    }
+
+    override fun context() : Context {
+        return context!!
     }
 
     override fun onCreateView(
@@ -198,7 +202,9 @@ class CurrencyFragment : BaseFragment(), CurrencyFragmentContract.View, TimerCal
         recyclerview_fragment_currency.visibility = View.VISIBLE
     }
 
-    override fun processError(withText: String) {}
+    override fun processError(withText: String?){
+        Toast.makeText(context, withText, Toast.LENGTH_SHORT).show()
+    }
 
     override fun initializeDependencies() {
         DaggerNetworkComponent
@@ -209,10 +215,6 @@ class CurrencyFragment : BaseFragment(), CurrencyFragmentContract.View, TimerCal
 
     override fun currencyList() {
         presenter.currencyList(currentCurrency)
-    }
-
-    override fun onTimerTicked() {
-        currencyList()
     }
 
     override fun onStart() {

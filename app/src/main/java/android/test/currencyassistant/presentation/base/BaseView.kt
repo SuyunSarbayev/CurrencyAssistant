@@ -12,5 +12,5 @@ interface BaseView {
 
     fun dismissLoader()
 
-    fun processError(withText: String)
+    fun processError(withText: String?)
 }

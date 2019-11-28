@@ -1,5 +1,6 @@
 package android.test.currencyassistant.presentation.contract
 
+import android.content.Context
 import android.test.currencyassistant.domain.models.Currency
 import android.test.currencyassistant.presentation.base.BasePresenter
 import android.test.currencyassistant.presentation.base.BaseView
@@ -38,6 +39,8 @@ interface CurrencyFragmentContract {
         fun unregisterCurrencyReceiver()
 
         fun initializeRecyclerView()
+
+        fun context() : Context
     }
 
     interface Presenter : BasePresenter<View>{

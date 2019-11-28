@@ -35,9 +35,10 @@ class CurrencyFragmentPageObject{
         scrollDown()
         selectCurrency()
         scrollDown()
-        changeCurrencyValue()
+        changeCurrencyValue("123.0")
         scrollDown()
         scrollUp()
+        changeCurrencyValue("0.0")
     }
 
     fun scrollDown(){
@@ -54,15 +55,15 @@ class CurrencyFragmentPageObject{
                     R.id.edittext_item_currency_value)))
     }
 
-    fun changeCurrencyValue(){
+    fun changeCurrencyValue(value: String){
 
         onView(withId(R.id.recyclerview_fragment_currency))
             .perform(
                 RecyclerViewActions.actionOnItemAtPosition<CurrencyViewHolder>(3, switchText(
-                    "123.0", R.id.edittext_item_currency_value)))
+                    value, R.id.edittext_item_currency_value)))
 
         onView(withRecyclerView(R.id.recyclerview_fragment_currency).atPosition(0))
-            .check(matches(hasDescendant(withText("123.0"))))
+            .check(matches(hasDescendant(withText(value))))
 
     }
 

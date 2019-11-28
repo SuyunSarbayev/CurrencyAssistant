@@ -2,4 +2,8 @@
     <string name="app_name">Currency Assistant</string>
 
     <string name="empty_currency_description">Sorry, can\'t load any currencies</string>
+
+    <string name="network_error_constant">Проверьте подключение к сети</string>
+    <string name="server_error_constant">Ошибка сервера</string>
+    <string name="page_not_found_error_constant">Страница не найдена</string>
 </resources>
